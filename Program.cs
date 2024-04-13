@@ -19,21 +19,21 @@ namespace IdentityServer
             builder.Services.AddDbContext<AppIdentityDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddIdentityServer(
-                          options =>
-                          {
-                              options.Events.RaiseErrorEvents = true;
-                              options.Events.RaiseFailureEvents = true;
-                              options.Events.RaiseInformationEvents = true;
-                              options.Events.RaiseSuccessEvents = true;
-                          }
-                )
-                .AddInMemoryApiScopes(IdentityConfigurator.ApiScopes)
-                .AddInMemoryIdentityResources(IdentityConfigurator.IdentityResources)
-                .AddInMemoryApiResources(IdentityConfigurator.ApiResources)
-                .AddInMemoryClients(IdentityConfigurator.Clients)
-                .AddResourceOwnerValidator<ResourceOwnerPasswordValidator<BaseIdentityUser>>()
-                .AddDeveloperSigningCredential()
-                .AddJwtBearerClientAuthentication();
+           options =>
+           {
+               options.Events.RaiseErrorEvents = true;
+               options.Events.RaiseFailureEvents = true;
+               options.Events.RaiseInformationEvents = true;
+               options.Events.RaiseSuccessEvents = true;
+           })
+           .AddProfileService<ProfileService>()
+           .AddInMemoryApiScopes(IdentityConfigurator.ApiScopes)
+           .AddInMemoryIdentityResources(IdentityConfigurator.IdentityResources)
+           .AddInMemoryApiResources(IdentityConfigurator.ApiResources)
+           .AddInMemoryClients(IdentityConfigurator.Clients)
+           .AddResourceOwnerValidator<ResourceOwnerPasswordValidator<BaseIdentityUser>>()
+           .AddDeveloperSigningCredential()
+           .AddJwtBearerClientAuthentication();
 
             builder.Services.AddIdentity<BaseIdentityUser, IdentityRole>(config =>
             {
