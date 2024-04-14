@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using System.Security.Claims;
 using IdentityServer4.Extensions;
+using IdentityModel;
 
 namespace IdentityServer.IdentityConfiguration
 {
@@ -33,7 +34,9 @@ namespace IdentityServer.IdentityConfiguration
         /// <exception cref="NotImplementedException"></exception>
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-            context.IssuedClaims.Add(await GetRoleClaims(context));
+            var roles = await GetRolesClaims(context);
+            roles.ForEach(role => context.IssuedClaims.Add(role));
+
             context.IssuedClaims.Add(await GetNameClaim(context));
         }
 
@@ -56,19 +59,20 @@ namespace IdentityServer.IdentityConfiguration
         /// <param name="context"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        private async Task<Claim> GetRoleClaims(ProfileDataRequestContext context)
+        private async Task<List<Claim>> GetRolesClaims(ProfileDataRequestContext context)
         {
             var sub = context.Subject.GetSubjectId();
             var user = await _userManager.FindByIdAsync(sub);
             if (user == null) throw new ArgumentException("Пользователь не найден, при попытке добавить роли в userClaims");
 
             var roles = await _userManager.GetRolesAsync(user);
-            string rolesJson = JsonConvert.SerializeObject(roles);
+            var claims = new List<Claim>();
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(JwtClaimTypes.Role, role));
+            }
 
-            //Добавление массива ролей. Через сериализатор, потому что в качестве значения claim можно запихать только строку
-            var result = new Claim(ROLES_CLAIM_NAME, rolesJson, IdentityServerConstants.ClaimValueTypes.Json);
-
-            return result;
+            return claims;
         }
 
         /// <summary>

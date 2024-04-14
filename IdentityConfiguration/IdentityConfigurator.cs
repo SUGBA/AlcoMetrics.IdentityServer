@@ -14,7 +14,8 @@ namespace IdentityServer.IdentityConfiguration
         public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-            new ApiScope("WineApi.default"),        //Доступ к WineWebApi
+            new ApiScope("AlcoMetrics.Wine.Backend.Default"),   
+            new ApiScope("AlcoMetrics.Backend.Default")             
         };
 
         /// <summary>
@@ -33,10 +34,15 @@ namespace IdentityServer.IdentityConfiguration
         public static IEnumerable<ApiResource> ApiResources =>
         new List<ApiResource>
         {
-            new ApiResource("WineApi")
+            new ApiResource("AlcoMetrics.Wine.Backend")
             {
-               Scopes = new List<string>{ "WineApi.default" },
+               Scopes = new List<string>{ "AlcoMetrics.Wine.Backend.Default" },
                ApiSecrets = new List<Secret>{ new Secret("secre_#$forWineApi17782_ahseasd2_$231zmnkmtslaf12&&/".Sha256()) }
+            },
+            new ApiResource("AlcoMetrics.Backend")
+            {
+               Scopes = new List<string>{ "AlcoMetrics.Backend.Default" },
+               ApiSecrets = new List<Secret>{ new Secret("djashvdjSecretttt_dahjsbdjaFORaakjsdafACLOMETRIC.BACKEND123asjhdv$".Sha256()) }
             }
         };
 
@@ -58,7 +64,8 @@ namespace IdentityServer.IdentityConfiguration
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    "WineApi.default"
+                    "AlcoMetrics.Wine.Backend.Default",
+                    "AlcoMetrics.Backend.Default"
                 },
                 AllowAccessTokensViaBrowser = true
             }
