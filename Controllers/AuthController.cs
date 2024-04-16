@@ -1,6 +1,7 @@
 ﻿using IdentityServer.Data.Models;
 using IdentityServer.Data.ViewModels;
 using IdentityServer.Services.Abstract;
+using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -40,8 +41,8 @@ namespace IdentityServer.Controllers
         /// </summary>
         /// <param name="viewModel"> Модель регистрации </param>
         /// <returns></returns>
-        [Authorize]
         [HttpPost("RegisterAdmin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminViewModel viewModel)
         {
             var result = await _authService.RegisterAdmin(viewModel);

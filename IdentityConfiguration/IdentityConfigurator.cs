@@ -1,7 +1,6 @@
 ﻿using IdentityServer4.Models;
 using IdentityServer4;
 using IdentityModel;
-using System.Security.Claims;
 
 namespace IdentityServer.IdentityConfiguration
 {
@@ -16,8 +15,8 @@ namespace IdentityServer.IdentityConfiguration
         public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-            new ApiScope("AlcoMetrics.Wine.Backend.Default"),   
-            new ApiScope("AlcoMetrics.Backend.Default")            
+            new ApiScope("AlcoMetrics.Wine.Backend.Default"),
+            new ApiScope("AlcoMetrics.Backend.Default")
         };
 
         /// <summary>
@@ -45,7 +44,8 @@ namespace IdentityServer.IdentityConfiguration
             {
                Scopes = new List<string>{ "AlcoMetrics.Backend.Default" },
                ApiSecrets = new List<Secret>{ new Secret("djashvdjSecretttt_dahjsbdjaFORaakjsdafACLOMETRIC.BACKEND123asjhdv$".Sha256()) }
-            }
+            },
+            new ApiResource(IdentityServerConstants.LocalApi.ScopeName)     //API Identity Server
         };
 
         /// <summary>
@@ -68,6 +68,7 @@ namespace IdentityServer.IdentityConfiguration
                     IdentityServerConstants.StandardScopes.Profile,
                     "AlcoMetrics.Wine.Backend.Default",
                     "AlcoMetrics.Backend.Default",
+                    IdentityServerConstants.LocalApi.ScopeName
                 },
                 AllowAccessTokensViaBrowser = true
             }

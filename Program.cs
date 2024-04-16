@@ -1,9 +1,11 @@
+using IdentityModel;
 using IdentityServer.Data.Models;
 using IdentityServer.DataBase.Contexts;
 using IdentityServer.Extensions;
 using IdentityServer.IdentityConfiguration;
 using IdentityServer.Services;
 using IdentityServer.Services.Abstract;
+using IdentityServer4;
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.AspNetIdentity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,6 +19,8 @@ namespace IdentityServer
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddControllers();
 
             builder.Services.AddDbContext<AppIdentityDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -47,16 +51,25 @@ namespace IdentityServer
             .AddEntityFrameworkStores<AppIdentityDbContext>()
             .AddDefaultTokenProviders();
 
-            builder.Services.AddAuthentication(options => {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            #region Добавляем локальную аутентификацию
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = IdentityServerConstants.LocalApi.PolicyName;
+                options.DefaultChallengeScheme = IdentityServerConstants.LocalApi.PolicyName;
             })
-            .AddJwtBearer();
+            .AddLocalApi();    
 
-            builder.Services.AddAuthorization();
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy(IdentityServerConstants.LocalApi.PolicyName, policy =>
+                {
+                    policy.AddAuthenticationSchemes(IdentityServerConstants.LocalApi.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                });
+            });
 
-            builder.Services.AddControllers();
+            #endregion
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddTransient<IAuthService, AuthService>();
@@ -68,7 +81,7 @@ namespace IdentityServer
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseIdentityServer();
-            app.MapDefaultControllerRoute();
+            app.MapControllers();
 
             app.Run();
         }
