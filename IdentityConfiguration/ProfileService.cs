@@ -15,10 +15,6 @@ namespace IdentityServer.IdentityConfiguration
     /// </summary>
     public class ProfileService : IProfileService
     {
-        private const string ROLES_CLAIM_NAME = "roles";
-
-        private const string USER_NAME_CLAIM_NAME = "name";
-
         private readonly UserManager<BaseIdentityUser> _userManager;
 
         public ProfileService(UserManager<BaseIdentityUser> userManager)
@@ -84,9 +80,9 @@ namespace IdentityServer.IdentityConfiguration
         {
             var sub = context.Subject.GetSubjectId();
             var user = await _userManager.FindByIdAsync(sub);
-            if (user == null) throw new ArgumentException("Пользователь не найден, при попытке добавить имя пользователя в userClaims");
+            if (user == null || user.UserName == null) throw new ArgumentException("Пользователь не найден или не содержит имя, при попытке добавить имя пользователя в userClaims");
 
-            var result = new Claim(USER_NAME_CLAIM_NAME, user.UserName);
+            var result = new Claim(JwtClaimTypes.Name, user.UserName);
 
             return result;
         }

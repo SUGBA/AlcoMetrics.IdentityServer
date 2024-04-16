@@ -1,5 +1,7 @@
 ﻿using IdentityServer4.Models;
 using IdentityServer4;
+using IdentityModel;
+using System.Security.Claims;
 
 namespace IdentityServer.IdentityConfiguration
 {
@@ -15,7 +17,7 @@ namespace IdentityServer.IdentityConfiguration
         new List<ApiScope>
         {
             new ApiScope("AlcoMetrics.Wine.Backend.Default"),   
-            new ApiScope("AlcoMetrics.Backend.Default")             
+            new ApiScope("AlcoMetrics.Backend.Default")            
         };
 
         /// <summary>
@@ -25,7 +27,7 @@ namespace IdentityServer.IdentityConfiguration
         new List<IdentityResource>
         {
             new IdentityResources.OpenId(),
-            new IdentityResources.Profile()
+            new IdentityResources.Profile(),
         };
 
         /// <summary>
@@ -34,12 +36,12 @@ namespace IdentityServer.IdentityConfiguration
         public static IEnumerable<ApiResource> ApiResources =>
         new List<ApiResource>
         {
-            new ApiResource("AlcoMetrics.Wine.Backend")
+            new ApiResource("AlcoMetrics.Wine.Backend", "WebApi for Wine Service", new List<string>{JwtClaimTypes.Role})
             {
                Scopes = new List<string>{ "AlcoMetrics.Wine.Backend.Default" },
                ApiSecrets = new List<Secret>{ new Secret("secre_#$forWineApi17782_ahseasd2_$231zmnkmtslaf12&&/".Sha256()) }
             },
-            new ApiResource("AlcoMetrics.Backend")
+            new ApiResource("AlcoMetrics.Backend", "WebApi for main agregate Service", new List<string>{JwtClaimTypes.Role})
             {
                Scopes = new List<string>{ "AlcoMetrics.Backend.Default" },
                ApiSecrets = new List<Secret>{ new Secret("djashvdjSecretttt_dahjsbdjaFORaakjsdafACLOMETRIC.BACKEND123asjhdv$".Sha256()) }
@@ -65,7 +67,7 @@ namespace IdentityServer.IdentityConfiguration
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     "AlcoMetrics.Wine.Backend.Default",
-                    "AlcoMetrics.Backend.Default"
+                    "AlcoMetrics.Backend.Default",
                 },
                 AllowAccessTokensViaBrowser = true
             }

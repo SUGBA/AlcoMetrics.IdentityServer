@@ -4,7 +4,9 @@ using IdentityServer.Extensions;
 using IdentityServer.IdentityConfiguration;
 using IdentityServer.Services;
 using IdentityServer.Services.Abstract;
+using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.AspNetIdentity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,13 +21,13 @@ namespace IdentityServer
             builder.Services.AddDbContext<AppIdentityDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddIdentityServer(
-           options =>
-           {
-               options.Events.RaiseErrorEvents = true;
-               options.Events.RaiseFailureEvents = true;
-               options.Events.RaiseInformationEvents = true;
-               options.Events.RaiseSuccessEvents = true;
-           })
+            options =>
+            {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+            })
            .AddProfileService<ProfileService>()
            .AddInMemoryApiScopes(IdentityConfigurator.ApiScopes)
            .AddInMemoryIdentityResources(IdentityConfigurator.IdentityResources)
@@ -45,14 +47,26 @@ namespace IdentityServer
             .AddEntityFrameworkStores<AppIdentityDbContext>()
             .AddDefaultTokenProviders();
 
+            builder.Services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer();
+
+            builder.Services.AddAuthorization();
+
             builder.Services.AddControllers();
 
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddTransient<IAuthService, AuthService>();
 
             var app = builder.Build();
 
             app.ConfigureDataBase();
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseIdentityServer();
             app.MapDefaultControllerRoute();
 

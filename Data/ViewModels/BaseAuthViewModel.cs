@@ -10,13 +10,13 @@ namespace IdentityServer.Data.ViewModels
         /// <summary>
         /// Пароль пользователя
         /// </summary>
-        [JsonPropertyName("password")]
+        [JsonPropertyName("Password")]
         public string Password { get; set; } = string.Empty;
 
         /// <summary>
         /// Логин пользователя
         /// </summary>
-        [JsonPropertyName("login")]
+        [JsonPropertyName("Login")]
         public string Login { get; set; } = string.Empty;
     }
 }
