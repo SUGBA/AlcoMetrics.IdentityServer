@@ -1,4 +1,5 @@
 ﻿using IdentityServer.Data.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace IdentityServer.Services.Abstract
 {
@@ -12,14 +13,14 @@ namespace IdentityServer.Services.Abstract
         /// </summary>
         /// <param name="viewModel"> Модель регистрации </param>
         /// <returns></returns>
-        Task<bool> RegisterUser(RegisterViewModel viewModel);
+        Task<IEnumerable<string>> RegisterUser(RegisterViewModel viewModel);
 
         /// <summary>
         /// Регистрация любого пользователя (В том числе админа)
         /// </summary>
         /// <param name="viewModel"> Модель регистрируемого пользователя </param>
         /// <returns></returns>
-        Task<bool> RegisterAdmin(RegisterAdminViewModel viewModel);
+        Task<IEnumerable<string>> RegisterAdmin(RegisterAdminViewModel viewModel);
 
         /// <summary>
         /// Выйти из системы

@@ -22,6 +22,8 @@ namespace IdentityServer
 
             builder.Services.AddControllers();
 
+            #region настраиваем аутентификацию и авторизацию
+
             builder.Services.AddDbContext<AppIdentityDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddIdentityServer(
@@ -48,10 +50,13 @@ namespace IdentityServer
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false;
             })
+            .AddErrorDescriber<CustomIdentityErrorDescriber>()
             .AddEntityFrameworkStores<AppIdentityDbContext>()
             .AddDefaultTokenProviders();
 
-            #region Добавляем локальную аутентификацию
+            #endregion
+
+            #region Настраиваем локальную аутентификацию
 
             builder.Services.AddAuthentication(options =>
             {

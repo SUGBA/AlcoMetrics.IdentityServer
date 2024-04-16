@@ -25,8 +25,6 @@ namespace IdentityServer.IdentityConfiguration
         public static IEnumerable<IdentityResource> IdentityResources =>
         new List<IdentityResource>
         {
-            new IdentityResources.OpenId(),
-            new IdentityResources.Profile(),
         };
 
         /// <summary>
@@ -45,7 +43,6 @@ namespace IdentityServer.IdentityConfiguration
                Scopes = new List<string>{ "AlcoMetrics.Backend.Default" },
                ApiSecrets = new List<Secret>{ new Secret("djashvdjSecretttt_dahjsbdjaFORaakjsdafACLOMETRIC.BACKEND123asjhdv$".Sha256()) }
             },
-            new ApiResource(IdentityServerConstants.LocalApi.ScopeName)     //API Identity Server
         };
 
         /// <summary>
@@ -61,14 +58,10 @@ namespace IdentityServer.IdentityConfiguration
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                 AccessTokenType = AccessTokenType.Jwt,
                 ClientSecrets = { new Secret("@win3_auth_s33cret123$123WEbuuserCclient41".Sha256())},
-                RequirePkce = true,
                 AllowedScopes =
                 {
-                    IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServerConstants.StandardScopes.Profile,
                     "AlcoMetrics.Wine.Backend.Default",
                     "AlcoMetrics.Backend.Default",
-                    IdentityServerConstants.LocalApi.ScopeName
                 },
                 AllowAccessTokensViaBrowser = true
             }

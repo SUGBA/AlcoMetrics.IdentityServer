@@ -38,23 +38,23 @@ namespace IdentityServer.Services
         /// </summary>
         /// <param name="viewModel"> Модель для регистрации </param>
         /// <returns>True - Успех/False - провал</returns>
-        public async Task<bool> RegisterUser(RegisterViewModel viewModel)
+        public async Task<IEnumerable<string>> RegisterUser(RegisterViewModel viewModel)
         {
             //Для регистрации админа выделена отдельная защищенная точка
             if (viewModel.UserRole == Roles.Admin)
-                return false;
+                return Enumerable.Empty<string>();
 
             var user = new BaseIdentityUser { UserName = viewModel.Login };
 
             var userResult = await _userManager.CreateAsync(user, viewModel.Password);
             if (!userResult.Succeeded)
-                return false;
+                return userResult.Errors.Select(x => x.Description);
 
             var roleResult = await _userManager.AddToRoleAsync(user, viewModel.UserRole.ToString());
             if (!roleResult.Succeeded)
-                return false;
+                return roleResult.Errors.Select(x => x.Description);
 
-            return true;
+            return Enumerable.Empty<string>();
         }
 
         /// <summary>
@@ -62,19 +62,19 @@ namespace IdentityServer.Services
         /// </summary>
         /// <param name="viewModel"></param>
         /// <returns></returns>
-        public async Task<bool> RegisterAdmin(RegisterAdminViewModel viewModel)
+        public async Task<IEnumerable<string>> RegisterAdmin(RegisterAdminViewModel viewModel)
         {
             var user = new BaseIdentityUser { UserName = viewModel.Login };
 
             var userResult = await _userManager.CreateAsync(user, viewModel.Password);
             if (!userResult.Succeeded)
-                return false;
+                return userResult.Errors.Select(x=>x.Description);
 
             var roleResult = await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
             if (!roleResult.Succeeded)
-                return false;
+                return roleResult.Errors.Select(x => x.Description);
 
-            return true;
+            return Enumerable.Empty<string>();
         }
     }
 }

@@ -30,10 +30,9 @@ namespace IdentityServer.Controllers
         /// <param name="viewModel"> Модель регистрации </param>
         /// <returns></returns>
         [HttpPost("RegisterUser")]
-        public async Task<IActionResult> RegisterUser([FromBody] RegisterViewModel viewModel)
+        public async Task<IEnumerable<string>> RegisterUser([FromBody] RegisterViewModel viewModel)
         {
-            var result = await _authService.RegisterUser(viewModel);
-            return result ? StatusCode(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status400BadRequest);
+            return await _authService.RegisterUser(viewModel);
         }
 
         /// <summary>
@@ -43,10 +42,9 @@ namespace IdentityServer.Controllers
         /// <returns></returns>
         [HttpPost("RegisterAdmin")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminViewModel viewModel)
+        public async Task<IEnumerable<string>> RegisterAdmin([FromBody] RegisterAdminViewModel viewModel)
         {
-            var result = await _authService.RegisterAdmin(viewModel);
-            return result ? StatusCode(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status400BadRequest);
+            return await _authService.RegisterAdmin(viewModel);
         }
 
         /// <summary>
