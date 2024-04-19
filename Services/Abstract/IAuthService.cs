@@ -1,5 +1,5 @@
-﻿using IdentityServer.Data.ViewModels;
-using Microsoft.AspNetCore.Identity;
+﻿using IdentityServer.Data.ViewModels.Request;
+using IdentityServer.Data.ViewModels.Response;
 
 namespace IdentityServer.Services.Abstract
 {
@@ -13,13 +13,13 @@ namespace IdentityServer.Services.Abstract
         /// </summary>
         /// <param name="viewModel"> Модель регистрации </param>
         /// <returns></returns>
-        Task<IEnumerable<string>> RegisterUser(RegisterViewModel viewModel);
+        Task<UserRegisterResponse> RegisterUser(RegisterRequest viewModel);
 
         /// <summary>
         /// Регистрация любого пользователя (В том числе админа)
         /// </summary>
         /// <param name="viewModel"> Модель регистрируемого пользователя </param>
         /// <returns></returns>
-        Task<IEnumerable<string>> RegisterAdmin(RegisterAdminViewModel viewModel);
+        Task<AdminRegisterResponse> RegisterAdmin(RegisterAdminRequest viewModel);
     }
 }

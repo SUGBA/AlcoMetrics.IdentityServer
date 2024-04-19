@@ -1,9 +1,7 @@
 ﻿using IdentityServer.Data.Models;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-using IdentityServer4;
 using Microsoft.AspNetCore.Identity;
-using Newtonsoft.Json;
 using System.Security.Claims;
 using IdentityServer4.Extensions;
 using IdentityModel;
@@ -34,6 +32,7 @@ namespace IdentityServer.IdentityConfiguration
             roles.ForEach(role => context.IssuedClaims.Add(role));
 
             context.IssuedClaims.Add(await GetNameClaim(context));
+            context.IssuedClaims.Add(await GetIdClaim(context));
         }
 
         /// <summary>
@@ -83,6 +82,22 @@ namespace IdentityServer.IdentityConfiguration
             if (user == null || user.UserName == null) throw new ArgumentException("Пользователь не найден или не содержит имя, при попытке добавить имя пользователя в userClaims");
 
             var result = new Claim(JwtClaimTypes.Name, user.UserName);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Добавить claim с Id пользователя
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private async Task<Claim> GetIdClaim(ProfileDataRequestContext context)
+        {
+            var sub = context.Subject.GetSubjectId();
+            var user = await _userManager.FindByIdAsync(sub);
+            if (user == null || user.Id == default(int)) throw new ArgumentException("Пользователь не найден или не содержит идентификатор, при попытке добавить Id пользователя в userClaims");
+
+            var result = new Claim(JwtClaimTypes.Id, user.Id.ToString());
 
             return result;
         }

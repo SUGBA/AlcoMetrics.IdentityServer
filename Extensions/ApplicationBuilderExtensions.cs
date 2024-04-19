@@ -1,5 +1,5 @@
 ﻿using IdentityServer.Data.Models;
-using IdentityServer.Data.ViewModels;
+using IdentityServer.Data.ViewModels.Request;
 using IdentityServer.DataBase.Contexts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

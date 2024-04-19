@@ -1,7 +1,7 @@
 ﻿using IdentityServer.Data.Models;
-using IdentityServer.Data.ViewModels;
+using IdentityServer.Data.ViewModels.Request;
+using IdentityServer.Data.ViewModels.Response;
 using IdentityServer.Services.Abstract;
-using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +30,7 @@ namespace IdentityServer.Controllers
         /// <param name="viewModel"> Модель регистрации </param>
         /// <returns></returns>
         [HttpPost("RegisterUser")]
-        public async Task<IEnumerable<string>> RegisterUser([FromBody] RegisterViewModel viewModel)
+        public async Task<UserRegisterResponse> RegisterUser([FromBody] RegisterRequest viewModel)
         {
             return await _authService.RegisterUser(viewModel);
         }
@@ -42,7 +42,7 @@ namespace IdentityServer.Controllers
         /// <returns></returns>
         [HttpPost("RegisterAdmin")]
         [Authorize(Roles = "Admin")]
-        public async Task<IEnumerable<string>> RegisterAdmin([FromBody] RegisterAdminViewModel viewModel)
+        public async Task<AdminRegisterResponse> RegisterAdmin([FromBody] RegisterAdminRequest viewModel)
         {
             return await _authService.RegisterAdmin(viewModel);
         }

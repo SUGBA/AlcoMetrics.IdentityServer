@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace IdentityServer.Data.ViewModels
+namespace IdentityServer.Data.ViewModels.Request
 {
     /// <summary>
     /// Базовая модель для аутентификации и регистрации
     /// </summary>
-    public abstract class BaseAuthViewModel
+    public abstract class BaseAuthRequest
     {
         /// <summary>
         /// Пароль пользователя

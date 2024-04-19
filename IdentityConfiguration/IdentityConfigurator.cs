@@ -33,12 +33,12 @@ namespace IdentityServer.IdentityConfiguration
         public static IEnumerable<ApiResource> ApiResources =>
         new List<ApiResource>
         {
-            new ApiResource("AlcoMetrics.Wine.Backend", "WebApi for Wine Service", new List<string>{JwtClaimTypes.Role})
+            new ApiResource("AlcoMetrics.Wine.Backend", "WebApi for Wine Service")
             {
                Scopes = new List<string>{ "AlcoMetrics.Wine.Backend.Default" },
                ApiSecrets = new List<Secret>{ new Secret("secre_#$forWineApi17782_ahseasd2_$231zmnkmtslaf12&&/".Sha256()) }
             },
-            new ApiResource("AlcoMetrics.Backend", "WebApi for main agregate Service", new List<string>{JwtClaimTypes.Role})
+            new ApiResource("AlcoMetrics.Backend", "WebApi for main agregate Service")
             {
                Scopes = new List<string>{ "AlcoMetrics.Backend.Default" },
                ApiSecrets = new List<Secret>{ new Secret("djashvdjSecretttt_dahjsbdjaFORaakjsdafACLOMETRIC.BACKEND123asjhdv$".Sha256()) }

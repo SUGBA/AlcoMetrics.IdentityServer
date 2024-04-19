@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace IdentityServer.Data.ViewModels
+namespace IdentityServer.Data.ViewModels.Request
 {
     /// <summary>
     /// Модель для регистрации пользователя
     /// </summary>
-    public class RegisterViewModel : BaseAuthViewModel
+    public class RegisterRequest : BaseAuthRequest
     {
         /// <summary>
         /// Пользовательская роль
