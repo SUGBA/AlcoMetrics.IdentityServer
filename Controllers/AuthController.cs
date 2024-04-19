@@ -46,16 +46,5 @@ namespace IdentityServer.Controllers
         {
             return await _authService.RegisterAdmin(viewModel);
         }
-
-        /// <summary>
-        /// Выйти из системы
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost("LogOut")]
-        public async Task<IActionResult> LogOut()
-        {
-            var result = await _authService.LogOut();
-            return result ? StatusCode(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status400BadRequest);
-        }
     }
 }

@@ -21,11 +21,5 @@ namespace IdentityServer.Services.Abstract
         /// <param name="viewModel"> Модель регистрируемого пользователя </param>
         /// <returns></returns>
         Task<IEnumerable<string>> RegisterAdmin(RegisterAdminViewModel viewModel);
-
-        /// <summary>
-        /// Выйти из системы
-        /// </summary>
-        /// <returns></returns>
-        Task<bool> LogOut();
     }
 }

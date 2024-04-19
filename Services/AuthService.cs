@@ -22,18 +22,6 @@ namespace IdentityServer.Services
         }
 
         /// <summary>
-        /// Выйти из системы
-        /// </summary>
-        /// <returns></returns>
-        public async Task<bool> LogOut()
-        {
-            if (_contextAccessor.HttpContext == null)
-                return false;
-            await _contextAccessor.HttpContext.SignOutAsync();
-            return true;
-        }
-
-        /// <summary>
         /// Регистрация любого пользователя кроме админа
         /// </summary>
         /// <param name="viewModel"> Модель для регистрации </param>
