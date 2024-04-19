@@ -15,9 +15,9 @@ namespace IdentityServer.IdentityConfiguration
     /// </summary>
     public class ProfileService : IProfileService
     {
-        private readonly UserManager<BaseIdentityUser> _userManager;
+        private readonly UserManager<AuthIdentityUser> _userManager;
 
-        public ProfileService(UserManager<BaseIdentityUser> userManager)
+        public ProfileService(UserManager<AuthIdentityUser> userManager)
         {
             _userManager = userManager;
         }

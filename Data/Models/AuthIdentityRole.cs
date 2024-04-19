@@ -3,7 +3,9 @@
 namespace IdentityServer.Data.Models
 {
     /// <summary>
-    /// Имплементация IdentityUser
+    /// Имплементация IdentityRole
     /// </summary>
-    public class BaseIdentityUser : IdentityUser { }
+    public class AuthIdentityRole: IdentityRole<int>
+    {
+    }
 }

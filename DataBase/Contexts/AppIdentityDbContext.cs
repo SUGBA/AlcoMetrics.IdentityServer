@@ -8,7 +8,7 @@ namespace IdentityServer.DataBase.Contexts
     /// <summary>
     /// Коннектор с базой данных
     /// </summary>
-    public class AppIdentityDbContext : IdentityDbContext<BaseIdentityUser>
+    public class AppIdentityDbContext : IdentityDbContext<AuthIdentityUser, AuthIdentityRole, int, AuthIdentityUserClaim, AuthIdentityUserRole, AuthIdentityUserLogin, AuthIdentityRoleClaim, AuthIdentityUserToken>
     {
         public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options) : base(options)
         {
@@ -18,17 +18,19 @@ namespace IdentityServer.DataBase.Contexts
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<BaseIdentityUser>(entity => entity.ToTable(name: "Users"));
-            builder.Entity<IdentityRole>(entity => entity.ToTable(name: "Roles"));
-            builder.Entity<IdentityUserRole<string>>(entity =>
+            builder.Entity<AuthIdentityUser>(entity =>
+                entity.ToTable(name: "Users"));
+            builder.Entity<AuthIdentityRole>(entity =>
+                entity.ToTable(name: "Roles"));
+            builder.Entity<AuthIdentityUserRole>(entity =>
                 entity.ToTable(name: "UserRoles"));
-            builder.Entity<IdentityUserClaim<string>>(entity =>
+            builder.Entity<AuthIdentityUserClaim>(entity =>
                 entity.ToTable(name: "UserClaim"));
-            builder.Entity<IdentityUserLogin<string>>(entity =>
+            builder.Entity<AuthIdentityUserLogin>(entity =>
                 entity.ToTable("UserLogins"));
-            builder.Entity<IdentityUserToken<string>>(entity =>
+            builder.Entity<AuthIdentityUserToken>(entity =>
                 entity.ToTable("UserTokens"));
-            builder.Entity<IdentityRoleClaim<string>>(entity =>
+            builder.Entity<AuthIdentityRoleClaim>(entity =>
                 entity.ToTable("RoleClaims"));
         }
     }

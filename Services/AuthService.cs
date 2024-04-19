@@ -11,11 +11,11 @@ namespace IdentityServer.Services
     /// </summary>
     public class AuthService : IAuthService
     {
-        private readonly UserManager<BaseIdentityUser> _userManager;
+        private readonly UserManager<AuthIdentityUser> _userManager;
 
         private readonly IHttpContextAccessor _contextAccessor;
 
-        public AuthService(UserManager<BaseIdentityUser> userManager, IHttpContextAccessor contextAccessor)
+        public AuthService(UserManager<AuthIdentityUser> userManager, IHttpContextAccessor contextAccessor)
         {
             _userManager = userManager;
             _contextAccessor = contextAccessor;
@@ -32,7 +32,7 @@ namespace IdentityServer.Services
             if (viewModel.UserRole == Roles.Admin)
                 return Enumerable.Empty<string>();
 
-            var user = new BaseIdentityUser { UserName = viewModel.Login };
+            var user = new AuthIdentityUser { UserName = viewModel.Login };
 
             var userResult = await _userManager.CreateAsync(user, viewModel.Password);
             if (!userResult.Succeeded)
@@ -52,7 +52,7 @@ namespace IdentityServer.Services
         /// <returns></returns>
         public async Task<IEnumerable<string>> RegisterAdmin(RegisterAdminViewModel viewModel)
         {
-            var user = new BaseIdentityUser { UserName = viewModel.Login };
+            var user = new AuthIdentityUser { UserName = viewModel.Login };
 
             var userResult = await _userManager.CreateAsync(user, viewModel.Password);
             if (!userResult.Succeeded)

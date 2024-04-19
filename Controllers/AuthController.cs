@@ -16,9 +16,9 @@ namespace IdentityServer.Controllers
     {
         private readonly IAuthService _authService;
 
-        private readonly UserManager<BaseIdentityUser> _userManager;
+        private readonly UserManager<AuthIdentityUser> _userManager;
 
-        public AuthController(IAuthService authService, UserManager<BaseIdentityUser> userManager)
+        public AuthController(IAuthService authService, UserManager<AuthIdentityUser> userManager)
         {
             _authService = authService;
             _userManager = userManager;

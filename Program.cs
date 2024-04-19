@@ -1,4 +1,3 @@
-using IdentityModel;
 using IdentityServer.Data.Models;
 using IdentityServer.DataBase.Contexts;
 using IdentityServer.Extensions;
@@ -6,9 +5,7 @@ using IdentityServer.IdentityConfiguration;
 using IdentityServer.Services;
 using IdentityServer.Services.Abstract;
 using IdentityServer4;
-using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.AspNetIdentity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +13,7 @@ namespace IdentityServer
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -39,11 +36,11 @@ namespace IdentityServer
            .AddInMemoryIdentityResources(IdentityConfigurator.IdentityResources)
            .AddInMemoryApiResources(IdentityConfigurator.ApiResources)
            .AddInMemoryClients(IdentityConfigurator.Clients)
-           .AddResourceOwnerValidator<ResourceOwnerPasswordValidator<BaseIdentityUser>>()
+           .AddResourceOwnerValidator<ResourceOwnerPasswordValidator<AuthIdentityUser>>()
            .AddDeveloperSigningCredential()
            .AddJwtBearerClientAuthentication();
 
-            builder.Services.AddIdentity<BaseIdentityUser, IdentityRole>(config =>
+            builder.Services.AddIdentity<AuthIdentityUser, AuthIdentityRole>(config =>
             {
                 config.Password.RequiredLength = 4;
                 config.Password.RequireDigit = false;
@@ -81,7 +78,7 @@ namespace IdentityServer
 
             var app = builder.Build();
 
-            app.ConfigureDataBase();
+            await app.ConfigureDataBase();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
