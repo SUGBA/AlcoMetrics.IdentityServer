@@ -42,10 +42,11 @@ namespace IdentityServer
 
             builder.Services.AddIdentity<AuthIdentityUser, AuthIdentityRole>(config =>
             {
-                config.Password.RequiredLength = 4;
-                config.Password.RequireDigit = false;
+                config.Password.RequireDigit = true;
+                config.Password.RequiredLength = 6;
+                config.Password.RequireUppercase = true;
+                config.Password.RequireLowercase = true;
                 config.Password.RequireNonAlphanumeric = false;
-                config.Password.RequireUppercase = false;
             })
             .AddErrorDescriber<CustomIdentityErrorDescriber>()
             .AddEntityFrameworkStores<AppIdentityDbContext>()
